@@ -163,7 +163,8 @@ public class LoginActivity extends AppCompatActivity implements
 
 
     public void showLocation() {
-
+        Intent myIntent = new Intent(LoginActivity.this, LocationActivity.class);
+        LoginActivity.this.startActivity(myIntent);
     }
 
     @Override
