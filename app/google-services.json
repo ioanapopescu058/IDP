@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "920174761625",
+    "firebase_url": "https://findmeapp-1521910725785.firebaseio.com",
+    "project_id": "findmeapp-1521910725785",
+    "storage_bucket": "findmeapp-1521910725785.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:920174761625:android:1e662f6810158c06",
+        "android_client_info": {
+          "package_name": "com.app.findmeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "920174761625-8j492jsur736bo7rv44r2m7bbvaq4gu4.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "920174761625-s7sd1frse6407nekb85gf85kfmtoh2pr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.app.findmeapp",
+            "certificate_hash": "381e96671d03649b636d766fb6cdcd35ae754eab"
+          }
+        },
+        {
+          "client_id": "920174761625-6vo6mh9eqr8mprf09g2vncgdvl81opfi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAeb7-6eJMBv6_jmHKZAfSTq2aO3z_I-8A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "920174761625-8j492jsur736bo7rv44r2m7bbvaq4gu4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
