@@ -1,5 +1,10 @@
 package com.app.findmeapp.model;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class User {
 
     private String userID;
@@ -48,6 +53,17 @@ public class User {
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("userID", userID);
+        result.put("username", username);
+        result.put("email", email);
+
+        return result;
+    }
+
 
 }
 

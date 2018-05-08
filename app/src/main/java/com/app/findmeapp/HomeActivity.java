@@ -19,8 +19,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity implements
         View.OnClickListener{
@@ -42,7 +48,8 @@ public class HomeActivity extends AppCompatActivity implements
 
         // Button listeners
         findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.disconnect_button).setOnClickListener(this);
+        findViewById(R.id.start_service_button).setOnClickListener(this);
+        findViewById(R.id.stop_service_button).setOnClickListener(this);
         findViewById(R.id.show_users_button).setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -56,17 +63,22 @@ public class HomeActivity extends AppCompatActivity implements
         mStatusTextView.setText(getString(R.string.signed_in) + " as " + user.getDisplayName());
 
         //FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        mDatabase = FirebaseDatabase.getInstance().getReference("users/" + user.getUid());
-        mDatabase.setValue(new User(user.getUid(), user.getDisplayName(), user.getEmail()));
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    return;
+                } else {
+                    mDatabase = FirebaseDatabase.getInstance().getReference("users/" + user.getUid());
+                    mDatabase.setValue(new User(user.getUid(), user.getDisplayName(), user.getEmail()));
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-        if(!runtime_permissions()) {
-            startService(new Intent(this, LocalizationService.class));
-        }
-
-        Toast.makeText(this,
-                "Welcome, " + user.getDisplayName() + "!",
-                Toast.LENGTH_SHORT)
-                .show();
+            }
+        });
     }
 
     private void signOut() {
@@ -82,22 +94,19 @@ public class HomeActivity extends AppCompatActivity implements
                 });
     }
 
-    private void revokeAccess() {
-        mAuth.signOut();
-        mGoogleSignInClient.revokeAccess()
-                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-                        HomeActivity.this.startActivity(intent);
-                        finish();
-                    }
-                });
-    }
-
     public void chatUsers() {
         Intent intent = new Intent(HomeActivity.this, ChatUsersActivity.class);
         HomeActivity.this.startActivity(intent);
+    }
+
+    public void startService() {
+        if(!runtime_permissions()) {
+            startService(new Intent(HomeActivity.this, LocalizationService.class));
+        }
+    }
+
+    public void stopService() {
+        stopService(new Intent(HomeActivity.this, LocalizationService.class));
     }
 
     @Override
@@ -106,8 +115,11 @@ public class HomeActivity extends AppCompatActivity implements
             case R.id.sign_out_button:
                 signOut();
                 break;
-            case R.id.disconnect_button:
-                revokeAccess();
+            case R.id.start_service_button:
+                startService();
+                break;
+            case R.id.stop_service_button:
+                stopService();
                 break;
             case R.id.show_users_button:
                 chatUsers();

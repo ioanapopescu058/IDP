@@ -86,10 +86,9 @@ public class LocalizationService extends Service {
 
         locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         if (locationManager != null) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 0, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 2000, 0, locationListener);
         }
 
-        mDatabase = FirebaseDatabase.getInstance().getReference("");
     }
 
     @Override
@@ -102,6 +101,7 @@ public class LocalizationService extends Service {
 
     private void writeNewLocation(Double longitude, Double latitude, Long timestamp) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference("");
         if (user != null) {
             Coordinates coordinates = new Coordinates(longitude, latitude, timestamp);
             mDatabase.child("users").child(user.getUid()).child("coordinates").setValue(coordinates);
